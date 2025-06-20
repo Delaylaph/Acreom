@@ -85,6 +85,11 @@
                 />
             </div>
             <div class="document-row__date-properties">
+                <div class="view-page-labels">
+                    <template  v-for="label in pageLabels">
+                        <span class="label">{{ label }}</span>
+                    </template>
+                </div>
                 <span
                     v-if="shouldShowProperty('updated')"
                     class="has-tippy"
@@ -251,6 +256,10 @@ export default class PageRow extends Vue {
         return this.document?.title && this.document.title !== ''
             ? this.document.title
             : 'Untitled';
+    }
+
+    get pageLabels() {
+        return this.document?.labels;
     }
 
     get pageId() {
@@ -490,7 +499,7 @@ export default class PageRow extends Vue {
 
     &__date-properties {
         display: grid;
-        grid-template-columns: repeat(2, min-content);
+        grid-template-columns: repeat(3, min-content);
         align-items: center;
         gap: 4px;
 
@@ -506,6 +515,20 @@ export default class PageRow extends Vue {
             color: var(--document-card-meta-text-color);
             white-space: nowrap;
         }
+    }
+}
+.view-page-labels {
+    display: flex;
+    gap: 2px;
+    margin-right: 8px;
+
+    span {
+        color: var(--accent-color);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 500;
     }
 }
 </style>

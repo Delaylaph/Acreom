@@ -338,6 +338,7 @@ export class ViewController extends EntityController<IView> {
 
     isActiveView(id: string) {
         const view = this.getViewById(id);
+        console.log(view);
         return view?.type === ViewType.ACTIVE;
     }
 
