@@ -141,7 +141,7 @@
                         class="
                             appearance__wrapper__option__content-width-picker__option
                         "
-                        @click="updateEditorWidth(false)"
+                        @click="updateEditorWidth(false, contentWidth)"
                     >
                         <div
                             class="
@@ -174,7 +174,7 @@
                             "
                             :class="{ active: !isWideEditor }"
                         >
-                            Narrow
+                            Narrow <input type="number" v-model="contentWidth" @change="updateEditorWidth(false, contentWidth)"></input>
                         </div>
                     </div>
                     <div
@@ -182,7 +182,7 @@
                             appearance__wrapper__option__content-width-picker__option
                         "
                         :class="{ active: !isWideEditor }"
-                        @click="updateEditorWidth(true)"
+                        @click="updateEditorWidth(true, 700)"
                     >
                         <div
                             class="
@@ -251,7 +251,10 @@ import {
         EditorWideIcon,
     },
 })
+
 export default class Preferences extends Vue {
+    contentWidth: string = this.$store.getters['appSettings/editorOptions'].contentWidth;
+
     get theme() {
         return this.$store.getters['appSettings/theme'].toLowerCase();
     }
@@ -299,9 +302,10 @@ export default class Preferences extends Vue {
         return this.$store.getters['appSettings/editorOptions'].wide;
     }
 
-    updateEditorWidth(wide: boolean) {
+    updateEditorWidth(wide: boolean, contentWidth: string) {
         this.$store.dispatch('appSettings/updateEditorOptions', {
             wide,
+            contentWidth: contentWidth,
         });
         this.$nuxt.$emit('tab-resize');
 

@@ -40,7 +40,9 @@
                         'wide-editor': isWideEditor,
                         'single-tab': isSingleTab,
                     }"
+                    :style="{ maxWidth: isWideEditor ? '100%' : contentWidth + 'px' }"
                 >
+                
                     <div
                         ref="myDayHeader"
                         class="my-day--content--editor--header"
@@ -280,6 +282,10 @@ export default class MyDayTab extends TabMixin<MyDayData> {
 
     get title() {
         return format(this.overviewDate, 'EEEE, LLL d, yyyy');
+    }
+
+    get contentWidth() {
+        return this.$store.getters['appSettings/editorOptions'].contentWidth;
     }
 
     @Watch('viewDate', { immediate: true })
@@ -883,7 +889,6 @@ export default class MyDayTab extends TabMixin<MyDayData> {
         }
 
         &--editor {
-            max-width: 570px;
             margin: 0 auto 0;
             display: flex;
             flex-direction: column;

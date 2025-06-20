@@ -7,6 +7,7 @@ import { APP_COLORS, Color, IntegrationType } from '~/constants';
 interface AppState {
     editorOptions: {
         wide: boolean;
+        contentWidth: string;
         spellcheck: boolean;
         defaultTags: boolean;
         agendaShowCompleted: boolean;
@@ -51,6 +52,7 @@ const initializePrefersColorScheme = ():
 export const state: () => AppState = () => ({
     editorOptions: {
         wide: false,
+        contentWidth: '800',
         spellcheck: false,
         defaultTags: false,
         agendaShowCompleted: true,
@@ -242,6 +244,7 @@ export const actions = {
         { commit, getters }: any,
         value: Partial<AppState['editorOptions']>,
     ) {
+        console.log('updateEditorOptions', value);
         commit('updateEditorOptions', value);
         window?.$nuxt.$emit('title-editor:size-changed');
         this.$appStorage.set('editorOptions', {

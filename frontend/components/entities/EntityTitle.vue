@@ -32,12 +32,7 @@ export default class EntityTitle extends Vue {
 </script>
 <style lang="scss">
 .entity-title {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 30px;
-
-    .narrow-editor & {
-        max-width: 570px;
-    }
+    flex: 1;
+    padding: 0 30px 0 20px;
 }
 </style>

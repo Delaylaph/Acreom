@@ -263,7 +263,7 @@ export const KEYBINDS = {
         configurable: true,
     },
     [SHORTCUTS_ALIASES.PANEL_INFO]: {
-        keybind: 'meta+shift+i',
+        keybind: 'meta+shift+;',
         namespace: 'always-active',
         category: 'core',
         configurable: true,

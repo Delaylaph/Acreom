@@ -26,24 +26,27 @@
                 class="entity--wrapper--content tab-content-gutter"
             >
                 <div class="entity--wrapper--content--misc">
-                    <EntityExtendedProperties />
+                    <EntityExtendedProperties/>
                 </div>
                 <div class="entity--wrapper--content--icon">
-                    <EntityIcon />
+                   
                 </div>
-                <div class="entity--wrapper--content--title">
+                <div class="entity--wrapper--content--title" :style="{ width: isWideEditor ? '100%' : contentWidth + 'px' }">
+                    <EntityIcon :isWideEditor="isWideEditor" />
                     <EntityTitle
                         ref="entityTitle"
+                        :isWideEditor="isWideEditor"
                         @focus-tab="$emit('focus-tab')"
                         @paste:multiline="handleMultilinePaste"
                     />
                 </div>
                 <div class="entity--wrapper--content--controls">
-                    <EntityControls @focus-tab="$emit('focus-tab')" />
+                    <EntityControls :isWideEditor="isWideEditor" @focus-tab="$emit('focus-tab')" />
                 </div>
                 <div class="entity--wrapper--content--editor">
                     <EditorWrapper
                         ref="editorWrapper"
+                        :isWideEditor="isWideEditor"
                         :placeholder="editorPlaceholder"
                         @focus-tab="$emit('focus-tab')"
                         @update-tab-data="$emit('data-update', $event)"
@@ -228,6 +231,10 @@ export default class EntityTab extends TabMixin<any> {
 
     get panelData() {
         return this.$store.getters['tabs/byId'](this.id).data.panelData;
+    }
+
+    get contentWidth() {
+        return this.$store.getters['appSettings/editorOptions'].contentWidth;
     }
 
     _openPanel(
@@ -473,6 +480,16 @@ export default class EntityTab extends TabMixin<any> {
             position: relative;
             overflow-y: overlay;
             overflow-x: hidden;
+
+
+            &--title {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                margin: 0 auto;
+                
+            }
 
             &--editor {
                 height: 100%;

@@ -7,7 +7,7 @@
                 @mouseup="handleMouseUp"
                 @mousedown="handleMouseDown"
             >
-                <div class="editor-wrapper--content--inner">
+                <div class="editor-wrapper--content--inner" :style="{ maxWidth: isWideEditor ? '100%' : contentWidth + 'px' }">
                     <Editor
                         ref="editor"
                         :value="editorDocument.content"
@@ -47,6 +47,8 @@ import { IDocument } from '~/components/document/model';
 import type EditorComponent from '~/components/editor/EditorComponent.vue';
 import { TabSymbols } from '~/constants/symbols';
 import { ITask } from '~/components/task/model';
+import { es } from 'chrono-node';
+import { is } from 'date-fns/locale';
 
 @Component({
     name: 'EditorWrapper',
@@ -69,6 +71,9 @@ export default class EditorWrapper extends Vue {
 
     @Prop({ required: true })
     placeholder!: string;
+
+    @Prop({ type: Boolean, default: false })
+    isWideEditor!: boolean;
 
     mouseDownElement: HTMLElement | null = null;
     childEditor: any = null;
@@ -105,6 +110,10 @@ export default class EditorWrapper extends Vue {
             this.$store.getters['document/byClip'](this.entityId) ??
             {}
         );
+    }
+
+    get contentWidth() {
+        return this.$store.getters['appSettings/editorOptions'].contentWidth;
     }
 
     get editor() {
@@ -380,11 +389,9 @@ export default class EditorWrapper extends Vue {
             margin: 0 auto;
 
             &--wrapper {
+                padding-top: 20px;
             }
 
-            .narrow-editor & {
-                max-width: 510px;
-            }
         }
 
         &.wide-editor {

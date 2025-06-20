@@ -12,6 +12,7 @@ import PageHeaderControls from '~/components/tabs/scroll-headers/PageHeaderContr
     components: {},
 })
 export default class EntityIcon extends Vue {
+
     get iconComponent() {
         return PageHeaderControls;
     }
@@ -19,11 +20,6 @@ export default class EntityIcon extends Vue {
 </script>
 <style lang="scss" scoped>
 .entity-icon {
-    margin: 0 auto;
-    padding: 0 30px 15px;
-
-    .narrow-editor & {
-        max-width: 570px;
-    }
+    padding: 0 0 15px 15px;
 }
 </style>

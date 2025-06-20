@@ -16,7 +16,6 @@
     }
   ],
   "win": {
-    "certificateSubjectName": "acreom Technologies s.r.o.",
     "timeStampServer": "http://timestamp.digicert.com",
     "rfc3161TimeStampServer": "http://timestamp.digicert.com",
     "extraResources": [

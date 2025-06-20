@@ -3,6 +3,10 @@
 ![Release](https://github.com/acreom/app/actions/workflows/release.yaml/badge.svg)
 
 <p align="center">
+P.S. I think the main repository is no longer being maintained, and I probably won't see my pull request accepted, so I've decided to make my small changes here instead.
+</p>
+
+<p align="center">
   <a href="https://acreom.com">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="/assets/acreom-logo-light.svg">

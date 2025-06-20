@@ -1,6 +1,6 @@
 <template>
     <div v-if="page && !page.template">
-        <div v-if="showControls" class="entity-controls">
+        <div v-if="showControls" class="entity-controls" :style="{ maxWidth: isWideEditor ? '100%' : contentWidth + 'px' }">
             <PageStatusComponent
                 v-if="showStatus"
                 :source="source"
@@ -33,7 +33,7 @@
     </div>
 </template>
 <script lang="ts">
-import { Component, Inject, InjectReactive, Vue } from 'vue-property-decorator';
+import { Component, Inject, InjectReactive, Vue, Prop } from 'vue-property-decorator';
 import { TabSymbols } from '~/constants/symbols';
 import DatePicker from '~/components/date-picker/DatePicker.vue';
 import InterfaceArrowsCornerUpRight from '~/components/streamline/InterfaceArrowsCornerUpRight.vue';
@@ -72,6 +72,9 @@ export default class EntityControls extends Vue {
     @InjectReactive(TabSymbols.ENTITY_TYPE)
     entityType!: string;
 
+    @Prop({ type: Boolean, default: false })
+    isWideEditor!: boolean;
+
     $refs!: {
         linksButton: HTMLButtonElement;
     };
@@ -80,6 +83,9 @@ export default class EntityControls extends Vue {
 
     get source() {
         return this.$tracking.resolveSourceFromTab(this.tabId);
+    }
+    get contentWidth() {
+        return this.$store.getters['appSettings/editorOptions'].contentWidth;
     }
 
     get page() {
@@ -194,9 +200,6 @@ export default class EntityControls extends Vue {
     border-top: 1px solid var(--tab-divider-color);
     border-bottom: 1px solid var(--tab-divider-color);
 
-    .narrow-editor & {
-        max-width: 510px;
-    }
 
     .backlinks {
         @include font12-500;
