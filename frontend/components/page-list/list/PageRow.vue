@@ -87,7 +87,7 @@
             <div class="document-row__date-properties">
                 <div class="view-page-labels">
                     <template  v-for="label in pageLabels">
-                        <span class="label">{{ label }}</span>
+                        <span class="label" @click.stop="handleLabelClick">{{ label }}</span>
                     </template>
                 </div>
                 <span
@@ -375,6 +375,17 @@ export default class PageRow extends Vue {
         });
 
         this.highlight = false;
+    }
+
+    async handleLabelClick(e: MouseEvent) {
+        e.stopPropagation();
+        const label = (e.target as HTMLElement).textContent?.trim();
+        if (!label) return;
+        // const lr = { //TODO: implement label filter by click
+        //     filterByLabels: [label]
+        // };
+        // this.$emit('update', lr);
+        // this.$emit('close');
     }
 
     handleMouseUp() {

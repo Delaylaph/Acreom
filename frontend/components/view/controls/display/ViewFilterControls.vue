@@ -1,13 +1,13 @@
 <template>
     <div class="view-filter-controls">
         <PageListSourceControls
-            v-if="view.type === ViewType.ALL_PAGES"
+            v-if="view?.type === ViewType.ALL_PAGES"
             class="view-filter-controls__item"
             :tab-id="tabId"
             :source="sourceDef"
             @update="handleSourceChange"
         />
-        <hr v-if="view.type === ViewType.ALL_PAGES" />
+        <hr v-if="view?.type === ViewType.ALL_PAGES" />
         <div class="view-filter-controls__title">Filters</div>
         <PageDefinitionControl
             v-for="definition in availableControls"

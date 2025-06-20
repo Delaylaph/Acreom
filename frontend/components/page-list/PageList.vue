@@ -48,10 +48,7 @@
                         <div class="page-list__header-controls">
                             <PageListControlsWrapper
                                 :definition="activeFilters"
-                                :show-filter-options="
-                                    $entities.view.isAllPagesView(entityId) ||
-                                    $entities.view.isActiveView(entityId)
-                                "
+                                :show-filter-options="true"
                                 :show-group-options="
                                     !$entities.view.isArchiveView(entityId)
                                 "
