@@ -48,7 +48,7 @@
                         <div class="page-list__header-controls">
                             <PageListControlsWrapper
                                 :definition="activeFilters"
-                                :show-filter-options="true"
+                                :show-filter-options="!$entities.project.isProject(entityId)"
                                 :show-group-options="
                                     !$entities.view.isArchiveView(entityId)
                                 "

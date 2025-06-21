@@ -121,14 +121,9 @@ export default class PageListControlsDropdown extends Vue {
                         this.entityId,
                     );
                     if (!type) return;
+                   
+                    console.log(this.$entities);
                     if (isEmpty(value)) {
-                        this.$tracking.trackEventV2(type, {
-                            action: TrackingAction.CLEAR_FILTER,
-                            source: TrackingActionSource.DROPDOWN,
-                            sourceMeta: this.$tracking.resolveFilterType(
-                                controlDefinition.name,
-                            ),
-                        });
                         return;
                     }
                     const isNewProperty = !this.definitions.find(
@@ -136,21 +131,8 @@ export default class PageListControlsDropdown extends Vue {
                             definition.property === controlDefinition.property,
                     );
                     if (isNewProperty) {
-                        this.$tracking.trackEventV2(type, {
-                            action: TrackingAction.ADD_FILTER,
-                            sourceMeta: this.$tracking.resolveFilterType(
-                                controlDefinition.name,
-                            ),
-                        });
                         return;
                     }
-                    this.$tracking.trackEventV2(type, {
-                        action: TrackingAction.UPDATE_FILTER,
-                        source: TrackingActionSource.DROPDOWN,
-                        sourceMeta: this.$tracking.resolveFilterType(
-                            controlDefinition.name,
-                        ),
-                    });
                 },
                 close: (value: any) => {
                     if (!value || isEmpty(value)) {

@@ -22,6 +22,10 @@ export class ProjectController extends FolderController {
         );
     }
 
+    isProject(id: string): boolean {
+        return this.byId(id) ? true : false;
+    }
+
     getSidebarCount(id: string) {
         return this.context.store.getters['folder/projectPages'](id).length;
     }
