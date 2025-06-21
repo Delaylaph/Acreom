@@ -50,15 +50,10 @@ export default class NewEntityDropdown extends Vue {
     async newFolder() {
         this.$emit('close');
         const activeFolder = this.$entities.folder.getActiveFolder();
-        if (!activeFolder) return;
-        const shouldUseParentProperties =
-            activeFolder && activeFolder.type === FolderType.FOLDER;
+        const shouldUseParentProperties = activeFolder?.type === FolderType.FOLDER;
         const id = await this.$entities.folder.newFolder({
-            sharingUuid:
-                shouldUseParentProperties && activeFolder.sharingUuid
-                    ? v4()
-                    : null,
-            parentId: shouldUseParentProperties ? activeFolder.id : null,
+            sharingUuid: shouldUseParentProperties && activeFolder?.sharingUuid ? v4() : null,
+            parentId: shouldUseParentProperties ? activeFolder!.id : null,
         });
         this.$tracking.trackEventV2(TrackingType.FOLDER, {
             action: TrackingAction.CREATE,
