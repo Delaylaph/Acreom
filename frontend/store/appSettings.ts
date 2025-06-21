@@ -8,6 +8,7 @@ interface AppState {
     editorOptions: {
         wide: boolean;
         contentWidth: string;
+        showInfoPanel: boolean;
         spellcheck: boolean;
         defaultTags: boolean;
         agendaShowCompleted: boolean;
@@ -53,6 +54,7 @@ export const state: () => AppState = () => ({
     editorOptions: {
         wide: false,
         contentWidth: '800',
+        showInfoPanel: false,
         spellcheck: false,
         defaultTags: false,
         agendaShowCompleted: true,

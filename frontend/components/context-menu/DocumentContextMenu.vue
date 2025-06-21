@@ -331,6 +331,10 @@ export default class DocumentContextMenu extends Vue {
         return this.$store.getters['vault/type'] === 'remote';
     }
 
+    get alwaysShowInfoPanel() {
+        return this.$store.getters['appSettings/editorOptions'].showInfoPanel;
+    }
+
     pickDate() {
         this.pickingDate = true;
     }
@@ -348,12 +352,16 @@ export default class DocumentContextMenu extends Vue {
 
     toggleInfoPanel() {
         this.$emit('close');
+        this.$store.dispatch('appSettings/updateEditorOptions', {
+            showInfoPanel: !this.alwaysShowInfoPanel,
+        });
         this.$nuxt.$emit(
             `toggle-panel-${this.tabId}`,
             'page',
             null,
             TrackingActionSource.DROPDOWN,
         );
+        
     }
 
     openInFinder() {

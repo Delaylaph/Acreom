@@ -265,21 +265,18 @@ export default class EntityTab extends TabMixin<any> {
             panelData,
         });
     }
+    get alwaysShowInfoPanel() {
+        return this.$store.getters['appSettings/editorOptions'].showInfoPanel;
+    }
 
     togglePanel(
         panelType: string | null = null,
         panelData: Tab['data']['panelData'] = null,
-        source: TrackingActionSource,
     ) {
         if (this.document && this.document.template) return;
         const isOpen = this.isPanelOpen;
 
         if (!isOpen) {
-            this.$tracking.trackEventV2(TrackingType.INFO_PANEL, {
-                action: TrackingAction.OPEN,
-                source,
-                entityId: this.entityId,
-            });
             this._openPanel(panelType, panelData);
             return;
         }
@@ -291,12 +288,6 @@ export default class EntityTab extends TabMixin<any> {
             this._changePanelType(panelType as string, panelData);
             return;
         }
-
-        this.$tracking.trackEventV2(TrackingType.INFO_PANEL, {
-            action: TrackingAction.CLOSE,
-            source,
-            entityId: this.entityId,
-        });
         this._closePanel();
     }
 
@@ -321,6 +312,9 @@ export default class EntityTab extends TabMixin<any> {
     mounted() {
         this.registerPanelHandlers();
         this.registerScrollObservable();
+        if(this.alwaysShowInfoPanel && !this.isPanelOpen) {
+            this.togglePanel(`toggle-panel-${this.id}`, 'page');
+        }
     }
 
     registerScrollObservable() {

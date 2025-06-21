@@ -7,7 +7,7 @@
                 detached,
             }"
         >
-            <button class="close" @click="$emit('close')">
+            <button class="close" @click="closePagePanel()">
                 <InterfaceDelete1 class="icon" />
             </button>
         </div>
@@ -182,6 +182,12 @@ export default class PagePanel extends Vue {
         }
 
         return headings;
+    }
+    closePagePanel() {
+        this.$emit('close');
+        this.$store.dispatch('appSettings/updateEditorOptions', {
+            showInfoPanel: false,
+        });
     }
 }
 </script>
