@@ -181,6 +181,7 @@ export default class ImageComponent extends Vue {
 
     handleImageLoad(e: Event) {
         this.loaded = true;
+        this.updateAttributes({ loading: false });
     }
 
     handleOpenImage() {

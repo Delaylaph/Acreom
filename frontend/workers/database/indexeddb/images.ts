@@ -124,18 +124,16 @@ export class ImagesIndexedDB extends IndexedDBBase<ImageObject> {
             imageEntity.entityId!,
         );
         const sep = this.context.$config.os === 'windows' ? '\\' : '/';
-        const pathBase = doc?.filepath?.split(sep);
-        pathBase?.pop();
-        const filepathBase = pathBase?.length
-            ? pathBase.join(sep)
-            : vault.filepath!;
+        
+        const filepathBase = vault.filepath;
+            console.log('vault filepath', vault.filepath);
         if (imageEntity.name?.endsWith(imageEntity.ext!)) {
             imageEntity.name = imageEntity.name?.slice(
                 0,
                 imageEntity.name?.length - ((imageEntity.ext?.length || 0) + 1),
             );
         }
-        const filepath = [filepathBase, imageEntity.name].join(sep);
+        const filepath = [filepathBase, 'attachments', imageEntity.name].join(sep);
         return this.getAvailableFilepath(
             filepath,
             imageEntity.filepath || undefined,
@@ -180,7 +178,7 @@ export class ImagesIndexedDB extends IndexedDBBase<ImageObject> {
         if (!vault.filepath) return;
         const isRemote = await this.isRemoteChange(vault.id, change);
         if (!isRemote) return;
-
+     
         const imageObj =
             change.type === 3
                 ? ((change as IDeleteChange).oldObj as ImageObject)
