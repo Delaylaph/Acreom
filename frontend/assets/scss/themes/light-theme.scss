@@ -19,7 +19,7 @@
     --app-mobile-bg-color: #{$blueGrey950};
 
     /* TABS */
-    --tab-bg-color: #{$white};
+    --tab-bg-color: #{#fdfdfd};
     --tab-header-bg-color: #{rgba($white, 0.63)};
     --tab-box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
 
@@ -135,7 +135,7 @@
 
     --sidebar-text-color__active: #{$blueGrey950};
     --sidebar-icon-color__active: #{$blueGrey800};
-    --sidebar-bg-color: #{$blueGrey50};
+    --sidebar-bg-color: #{#e1e3e9};
     --sidebar-bg-color__active: #{$blueGrey300-13};
     --sidebar-bg-color__mobile: #{$blueGrey900};
 

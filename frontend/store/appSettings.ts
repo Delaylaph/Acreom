@@ -328,6 +328,7 @@ export const actions = {
         this.$appStorage.set('theme', value);
     },
     updateAppColor(this: Context, { commit }: any, value: Color) {
+        console.log('updateAppColor', value);
         commit('updateAppColor', value);
         this.$appStorage.set('appColor', value);
     },

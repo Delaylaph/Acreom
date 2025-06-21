@@ -88,7 +88,7 @@
     --scrollbar-bg-color__hover: #{$blueGrey700};
 
     /* EDITOR */
-    --editor-text-color: #{$white};
+    --editor-text-color: #{#ebeef2};
     --editor-mark-bg-color: #{rgba(var(--accent-color-triplet), 0.4)};
     --editor-code-bg-color: #{$blueGrey900};
     --editor-code-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 12px 50px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(241, 241, 241, 0.03);
@@ -124,7 +124,7 @@
     --tooltip-keys-bg-color: #{$blueGrey700};
 
     /* SIDEBAR */
-    --sidebar-text-color: #{$blueGrey300};
+    --sidebar-text-color: #{$blueGrey200};
     --sidebar-icon-color: #{$blueGrey300};
     --sidebar-chevron-color: #{$blueGrey500};
 
@@ -135,7 +135,7 @@
 
     --sidebar-text-color__active: #{$white};
     --sidebar-icon-color__active: #{$white};
-    --sidebar-bg-color: #{$blueGrey950};
+    --sidebar-bg-color: #{$blueGrey800};
     --sidebar-bg-color__active: #{$blueGrey100-10};
     --sidebar-bg-color__mobile: #{$blueGrey900};
 
@@ -813,7 +813,7 @@
 
     --issue-status-bg-color__hover: #{$blueGrey100-20};
 
-    --jira-issue-text-color: #{$white};
+    --jira-issue-text-color: #{#ebeef2};
     --jira-issue-key-color: #{$blueGrey400};
     --jira-issue-bg-color__hover: #{$blueGrey100-10};
 

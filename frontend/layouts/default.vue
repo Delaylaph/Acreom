@@ -151,32 +151,12 @@ export default class DefaultLayout extends Vue {
     draggingTimeout: any = null;
 
     get accentColor() {
-        const theme: ThemeOptions.DARK | ThemeOptions.LIGHT =
-            this.$store.getters['appSettings/theme'];
         const appColor = this.$store.getters['appSettings/appColor'];
-
-        if (
-            !this.$accessControl.isProActive &&
-            !this.$accessControl.isTrialActive
-        ) {
-            return APP_COLORS[Color.TURQUOISE][theme].COLOR;
-        }
-
         return appColor.COLOR;
     }
 
     get accentColorTriplet() {
-        const theme: ThemeOptions.DARK | ThemeOptions.LIGHT =
-            this.$store.getters['appSettings/theme'];
         const appColor = this.$store.getters['appSettings/appColor'];
-
-        if (
-            !this.$accessControl.isProActive &&
-            !this.$accessControl.isTrialActive
-        ) {
-            return APP_COLORS[Color.TURQUOISE][theme].TRIPLET;
-        }
-
         return appColor.TRIPLET;
     }
 

@@ -105,7 +105,6 @@
             <div class="appearance__wrapper__option">
                 <div class="appearance__wrapper__option__title">
                     Accent Color
-                    <span>PRO</span>
                 </div>
                 <div class="appearance__wrapper__option__sub-title">
                     Adjust the highlights and accent color across the app.
@@ -272,14 +271,11 @@ export default class Preferences extends Vue {
     }
 
     get canChangeAccentColor() {
-        return (
-            this.$accessControl.isProActive || this.$accessControl.isTrialActive
-        );
+        return true;
     }
 
     get accentColorIndex() {
         if (!this.canChangeAccentColor) return Color.TURQUOISE;
-
         return this.$store.getters['appSettings/appColor'];
     }
 
@@ -294,7 +290,6 @@ export default class Preferences extends Vue {
             });
             return;
         }
-
         this.$store.dispatch('appSettings/updateAppColor', value);
     }
 
