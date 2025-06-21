@@ -677,16 +677,16 @@ export class Tracker {
     }
 
     sendEvent(event: any) {
-        if (!this.trackingUrl) return;
-        axios.post(this.trackingUrl, [event]).catch(e => {
-            return null;
-        });
+        // if (!this.trackingUrl) return;
+        // axios.post(this.trackingUrl, [event]).catch(e => {
+        //     return null;
+        // });
     }
 
     sendEventV2(event: any) {
-        if (!this.trackingUrlV2) return;
-        axios.post(this.trackingUrlV2, [event]).catch(e => {
-            return null;
-        });
+        // if (!this.trackingUrlV2) return;
+        // axios.post(this.trackingUrlV2, [event]).catch(e => {
+        //     return null;
+        // });
     }
 }
