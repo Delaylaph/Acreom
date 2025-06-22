@@ -461,7 +461,7 @@ export default class PageList extends Vue {
             for (const section of this.sections) {
                 const pagesForSection = this.pagesForSection(section!);
                 if (
-                    this.interactiveFilters.length &&
+                    this.groupBy === GroupingOptions.FOLDER &&
                     pagesForSection.length === 0
                 )
                     continue;
