@@ -246,7 +246,6 @@ export const actions = {
         { commit, getters }: any,
         value: Partial<AppState['editorOptions']>,
     ) {
-        console.log('updateEditorOptions', value);
         commit('updateEditorOptions', value);
         window?.$nuxt.$emit('title-editor:size-changed');
         this.$appStorage.set('editorOptions', {
@@ -328,7 +327,6 @@ export const actions = {
         this.$appStorage.set('theme', value);
     },
     updateAppColor(this: Context, { commit }: any, value: Color) {
-        console.log('updateAppColor', value);
         commit('updateAppColor', value);
         this.$appStorage.set('appColor', value);
     },

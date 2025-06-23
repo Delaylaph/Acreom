@@ -5,7 +5,7 @@
     >
         <div v-if="isSelectableOperation" class="definition-banner__definition">
             <div class="definition-banner__definition--text">
-                {{ propertyName }}
+                {{ definitionName }}
             </div>
             <div class="definition-banner__definition--text">
                 {{ readableOperation }}
@@ -30,7 +30,7 @@
                 {{ readableOperation }}
             </div>
             <div class="definition-banner__definition--text">
-                {{ propertyName }}
+                {{ definitionName }}
             </div>
         </div>
         <div class="definition-banner--reset">
@@ -94,8 +94,8 @@ export default class DefinitionBanner extends Vue {
         return this.$entities.view.readableOperation(this.definition.operation);
     }
 
-    get propertyName() {
-        return this.propertyDefinition!.name;
+    get definitionName() {
+        return this.definition!.name;
     }
 
     get searchPlaceholder() {
@@ -112,24 +112,10 @@ export default class DefinitionBanner extends Vue {
             ...this.definition,
             value,
         });
-        const type = this.$tracking.resolveTypeFromView(this.entityId);
-        if (!type) return;
-        this.$tracking.trackEventV2(type, {
-            action: TrackingAction.UPDATE_FILTER,
-            source: TrackingActionSource.BANNER,
-            sourceMeta: this.$tracking.resolveFilterType(this.propertyName),
-        });
     }
 
     remove() {
         this.$emit('delete');
-        const type = this.$tracking.resolveTypeFromView(this.entityId);
-        if (!type) return;
-        this.$tracking.trackEventV2(type, {
-            action: TrackingAction.CLEAR_FILTER,
-            source: TrackingActionSource.BANNER,
-            sourceMeta: this.$tracking.resolveFilterType(this.propertyName),
-        });
     }
 
     @Watch('definition.value', { immediate: true })

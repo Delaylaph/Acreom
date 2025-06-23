@@ -625,7 +625,7 @@ export default class PageList extends Vue {
     handleBannerUpdate(definition: any) {
         this.updateTabData({
             filterDefinition: this.activeFilters.map((def: any) => {
-                if (def.property === definition.property) {
+                if (def.id === definition.id) {
                     return definition;
                 }
                 return def;
@@ -661,7 +661,7 @@ export default class PageList extends Vue {
     handleRemoveFilter(definition: any) {
         this.updateTabData({
             filterDefinition: this.activeFilters.filter(
-                (def: any) => def.property !== definition.property,
+                (def: any) => def.id !== definition.id,
             ),
         });
     }

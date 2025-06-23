@@ -84,68 +84,72 @@ export default class PageListControlsDropdown extends Vue {
     }
 
     get availableControls() {
-        const availableControls = [
-            {
-                name: 'Label',
-                placeholderSuffix: 'labels',
-                property: 'labels',
-                operation: 'overlap',
-            },
-            {
-                name: 'Folder',
-                placeholderSuffix: 'folders',
-                property: 'projectId',
-                operation: 'overlap',
-            },
-            {
-                name: 'Project',
-                placeholderSuffix: 'projects',
-                property: 'project',
-                operation: 'overlap',
-            },
-        ].map(controlDefinition => {
-            return {
+        const options = this.$entities.view.viewSelectOptions();
+        
+        const availableControls: any = [];
+
+        for (let key in options) {
+            let controlDefinition: any = null;
+
+            if (key === 'labels') {
+                controlDefinition = {
+                    id: 'label',
+                    name: 'Label',
+                    placeholderSuffix: 'labels',
+                    property: 'labels',
+                    operation: 'overlap',
+                };
+            } else if (key === 'projectId') {
+                controlDefinition = {
+                    id: 'folder',
+                    name: 'Folder',
+                    placeholderSuffix: 'folders',
+                    property: 'projectId',
+                    operation: 'overlap',
+                };
+            } else if (key === 'project') {
+                controlDefinition = {
+                    id: 'project',
+                    name: 'Project',
+                    placeholderSuffix: 'projects',
+                    property: 'project',
+                    operation: 'overlap',
+                };
+            } else {
+                controlDefinition = {
+                    id: key,
+                    name: key.replace(/_/g, ' ').replace(/^./, c => c.toUpperCase()),
+                    placeholderSuffix: key.replace(/_/g, ' '),
+                    property: 'labels',
+                    operation: 'overlap',
+                };
+            }
+            availableControls.push({
                 ...this.$entities.view.createDefinitionControl(
                     controlDefinition,
                     this.definitions,
+                    options[key],
                 ),
                 update: (value: any) => {
                     const fn = this.$entities.view.createUpdateWrapper(
-                        controlDefinition.property,
-                        controlDefinition.operation,
+                        controlDefinition,
                         this.definitions,
                     );
                     const res = fn(value);
                     this.$emit('update', res);
-                    const type = this.$tracking.resolveTypeFromView(
-                        this.entityId,
-                    );
-                    if (!type) return;
-                   
-                    console.log(this.$entities);
-                    if (isEmpty(value)) {
-                        return;
-                    }
-                    const isNewProperty = !this.definitions.find(
-                        definition =>
-                            definition.property === controlDefinition.property,
-                    );
-                    if (isNewProperty) {
-                        return;
-                    }
                 },
                 close: (value: any) => {
                     if (!value || isEmpty(value)) {
                         const definition = this.definitions.filter(
                             definition =>
-                                definition.property !==
-                                controlDefinition.property,
+                                definition.id !==
+                                controlDefinition.id,
                         );
                         this.$emit('update', definition);
                     }
                 },
-            };
-        });
+            });
+        };
         return availableControls;
     }
 

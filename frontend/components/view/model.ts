@@ -9,6 +9,8 @@ import { ITask } from '~/components/task/model';
 import { IEvent } from '~/@types';
 
 export type ViewPropertyDefinition = {
+    id?: string;
+    name?: string;
     property: keyof IDocument | keyof ITask | keyof IEvent;
     operation:
         | 'eq'

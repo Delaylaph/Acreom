@@ -70,7 +70,7 @@
             class="inline-document-link"
             style="white-space: nowrap"
             :class="{
-                'has-focus': selected || previewOpen || contextMenuActive,
+                'has-focus': selected || previewOpen,
                 'read-only': !editor.isEditable,
             }"
             @click="navigate"

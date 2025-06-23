@@ -338,7 +338,6 @@ export class ViewController extends EntityController<IView> {
 
     isActiveView(id: string) {
         const view = this.getViewById(id);
-        console.log(view);
         return view?.type === ViewType.ACTIVE;
     }
 
@@ -543,43 +542,67 @@ export class ViewController extends EntityController<IView> {
 
     createDefinitionControl(
         controlDefinition: {
+            id: string;
             name: string;
             placeholderSuffix: string;
             property: string;
             operation: string;
         },
         definitions: any[],
+        items: any[],
     ) {
         const isMultiSelect = ['in', 'notin', 'overlap'].includes(
             controlDefinition.operation,
         );
-        const options = this.viewSelectOptions();
         return {
             name: 'Filter by ' + controlDefinition.name,
-            items: options[controlDefinition.property],
+            items: items,
             searchPlaceholder: 'Filter ' + controlDefinition.placeholderSuffix,
             placeholder: 'Select ' + controlDefinition.placeholderSuffix,
             multiselect: isMultiSelect,
             selectedItems:
-                this.selectedItemsByProperty(
+                this.selectedItemsById(
                     definitions,
-                    controlDefinition.property,
+                    controlDefinition.id,
                 ) ?? (isMultiSelect ? [] : null),
         };
     }
 
-    private selectedItemsByProperty(definitions: any[], property: string) {
-        return definitions.find(definition => definition.property === property)
+    private selectedItemsById(definitions: any[], id: string) {
+        return definitions.find(definition => definition.id === id)
             ?.value;
     }
 
-    private viewSelectOptions(): Record<string, any> {
+    viewSelectOptions(): Record<string, any> {
+        const labelsByType: Record<string, any[]> = {};
+
         const labels = this.context.$entities.label
             .list()
-            .map((label: ILabel) => ({
-                id: label,
-                label,
-            }));
+            .map((label: ILabel) => {
+                let type = null;
+                let labelText = label;
+                if (typeof label === 'string' && label.includes(':')) {
+                    const parts = label.split(':');
+                    type = parts[1] || null;
+                    labelText = parts[0];
+                }
+                if(type !== null) {
+                    if (!labelsByType[type]) {
+                        labelsByType[type] = [];
+                    }
+                    labelsByType[type].push({
+                        id: label,
+                        label: labelText,
+                    });
+                    return null; // Skip adding to the main labels array
+                } 
+                
+                return {
+                    id: label,
+                    label: labelText,
+                };
+            }).filter(Boolean); // Filter out null values
+
         const folders = this.context.$entities.folder
             .getFolders()
             .map((folder: IFolder) => ({
@@ -594,37 +617,43 @@ export class ViewController extends EntityController<IView> {
                 label: project.name,
             }));
 
+
+        // Формуємо результуючий об'єкт
         return {
-            labels,
+            ...labelsByType,
+            labels: labels,
             projectId: folders,
             project: projects,
         };
     }
 
     createUpdateWrapper(
-        property: string,
-        operation: string,
+        controlDefinition: Record<string, any>,
         definitions: any[],
     ) {
         return (value: any) => {
             const isNewProperty = !definitions.find(
-                definition => definition.property === property,
+                definition => definition.id && definition.id === controlDefinition.id,
             );
             return isNewProperty && !isEmpty(value)
                 ? [
                       ...definitions,
                       {
-                          property,
-                          operation,
-                          value,
+                        id: controlDefinition.id,
+                        name: controlDefinition.name,
+                        property: controlDefinition.property,
+                        operation: controlDefinition.operation,
+                        value,
                       },
                   ]
                 : definitions.map(definition => {
-                      if (definition.property === property) {
+                      if (definition.name === controlDefinition.name) {
                           return {
-                              property,
-                              operation,
-                              value,
+                              id: controlDefinition.id,
+                              name: controlDefinition.name,
+                              property: controlDefinition.property,
+                              operation: controlDefinition.operation,
+                              value: value,
                           };
                       }
                       return definition;
