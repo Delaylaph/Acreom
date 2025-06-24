@@ -579,27 +579,25 @@ export class ViewController extends EntityController<IView> {
         const labels = this.context.$entities.label
             .list()
             .map((label: ILabel) => {
-                let type = null;
-                let labelText = label;
                 if (typeof label === 'string' && label.includes(':')) {
                     const parts = label.split(':');
-                    type = parts[1] || null;
-                    labelText = parts[0];
-                }
-                if(type !== null) {
-                    if (!labelsByType[type]) {
-                        labelsByType[type] = [];
+                    if(parts[0].length > 1 && parts[1].length > 1) {
+                        const type = parts[0].slice(1);
+                        const labelText = parts[1];
+
+                        if (!labelsByType[type]) {
+                            labelsByType[type] = [];
+                        }
+                        labelsByType[type].push({
+                            id: label,
+                            label: labelText,
+                        });
+                        return null; // Skip adding to the main labels array
                     }
-                    labelsByType[type].push({
-                        id: label,
-                        label: labelText,
-                    });
-                    return null; // Skip adding to the main labels array
-                } 
-                
+                }
                 return {
                     id: label,
-                    label: labelText,
+                    label: label,
                 };
             }).filter(Boolean); // Filter out null values
 

@@ -141,6 +141,7 @@
                     <PageRow
                         :ref="`row-${data.id}`"
                         :focused="data.id === selectedId && !isDragging"
+                        @update="handleFilterFromRow"
                         :document="data.page"
                         :show-status="true"
                         :dragging="
@@ -630,6 +631,37 @@ export default class PageList extends Vue {
                 }
                 return def;
             }),
+        });
+    }
+
+    handleFilterFromRow(definition: any) {
+       const isNewProperty =  !this.activeFilters.some((def: any) => def.id && def.id === definition.id);
+
+       this.updateTabData({
+            filterDefinition: isNewProperty
+                       ? [
+                             ...this.activeFilters,
+                             definition,
+                         ]
+                       : this.activeFilters.map((def: any) => {
+                            if (def.id && def.id === definition.id) {
+                                if(def.value.includes(definition.value[0])) {
+                                    if (definition.value.length === 1) {
+                                        return null;
+                                    }
+                                    definition.value = def.value.filter(
+                                        (value: any) => value !== definition.value[0],
+                                    );
+                                } else {
+                                    definition.value = [
+                                        ...def.value,
+                                        ...definition.value,
+                                    ]
+                                }
+                                return definition;
+                             }
+                             return def;
+                         }).filter(Boolean),
         });
     }
 

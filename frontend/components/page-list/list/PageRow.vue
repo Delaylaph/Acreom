@@ -84,26 +84,41 @@
                     :source="source"
                 />
             </div>
-            <div class="document-row__date-properties">
-                <div class="view-page-labels">
-                    <template  v-for="label in pageLabels">
-                        <span class="label" @click.stop="handleLabelClick">{{ label }}</span>
+            <div class="view-page-labels">
+                <template v-if="pageLabels.length > 0">
+                    <template v-for="(labels, type) in pageLabelsByType">
+                        <template v-if="type !== 'untyped'">
+                            <div class="typedLabelWrapper">{{ type.replace(/_/g, ' ') }}:
+                                <template v-for="labelWrapper in labels">
+                                    <span @click.stop="handleLabelClick(labelWrapper.id)">{{ labelWrapper.name }}</span>
+                                </template>
+                            </div>
+                        </template>
+                        <div v-else class="untypedLabelWrapper">
+                            <template v-for="label in labels">
+                                <span class="label" @click.stop="handleLabelClick(label)">{{ label }}</span>
+                            </template>
+                        </div>
                     </template>
+                </template>
+            </div>
+            <div class="document-row-back">
+                <div class="document-row__date-properties">
+                    <span
+                        v-if="shouldShowProperty('updated')"
+                        class="has-tippy"
+                        :data-tippy-content="longUpdatedAt"
+                    >
+                        {{ formatUpdatedAt }}
+                    </span>
+                    <span
+                        v-if="shouldShowProperty('created')"
+                        class="has-tippy"
+                        :data-tippy-content="longCreatedAt"
+                    >
+                        {{ formatCreatedAt }}
+                    </span>
                 </div>
-                <span
-                    v-if="shouldShowProperty('updated')"
-                    class="has-tippy"
-                    :data-tippy-content="longUpdatedAt"
-                >
-                    {{ formatUpdatedAt }}
-                </span>
-                <span
-                    v-if="shouldShowProperty('created')"
-                    class="has-tippy"
-                    :data-tippy-content="longCreatedAt"
-                >
-                    {{ formatCreatedAt }}
-                </span>
             </div>
         </div>
     </div>
@@ -259,7 +274,32 @@ export default class PageRow extends Vue {
     }
 
     get pageLabels() {
-        return this.document?.labels;
+        return this.document?.labels || [];
+    }
+
+    get pageLabelsByType() {
+        const labels = this.pageLabels;
+        
+        const result: Record<string, any[]> = {};
+        let untyped: string[] = [];
+
+        for (let i = 0; i < labels.length; i++) {
+            const label = labels[i];
+            const match = label.match(/^#([^:]+):(.+)$/);
+            if (match) {
+                const type = match[1];
+                const name = match[2];
+                if (!result[type]) result[type] = [];
+                result[type].push({ id: label, name });
+            } else {
+                untyped.push(label);
+            }
+        }
+        // Build result with untyped last
+        if (untyped.length) {
+            result.untyped = untyped;
+        }
+        return result;
     }
 
     get pageId() {
@@ -377,15 +417,25 @@ export default class PageRow extends Vue {
         this.highlight = false;
     }
 
-    async handleLabelClick(e: MouseEvent) {
-        e.stopPropagation();
-        const label = (e.target as HTMLElement).textContent?.trim();
-        if (!label) return;
-        // const lr = { //TODO: implement label filter by click
-        //     filterByLabels: [label]
-        // };
-        // this.$emit('update', lr);
-        // this.$emit('close');
+    async handleLabelClick(label: string) {
+        const filterDefinition = {
+            id: 'label',
+            name: 'Label',
+            property: 'labels',
+            operation: 'overlap',
+            value: [label],
+        };
+
+        if (label.includes(':')) {
+            const parts = label.split(':');
+            if(parts[0].length > 1 && parts[1].length > 1) {
+                const type = parts[0].slice(1);
+                filterDefinition.id = type;
+                filterDefinition.name = type.replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
+            }
+        }
+
+        this.$emit('update', filterDefinition);
     }
 
     handleMouseUp() {
@@ -415,13 +465,41 @@ export default class PageRow extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+.document-row-back {
+    display: flex;
+    gap: 6px;
+}
+.typedLabelWrapper {
+    display: flex;
+    align-items: center;
+    background: var(--document-card-bg-color_hover);
+    padding: 2px 6px;
+    border-radius: 6px;
+    line-height: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    gap: 8px;
+    width: max-content;
+
+    span {
+        color: var(--accent-color);
+        padding: 2px 0;
+        font-size: 1rem;
+    }
+}
+.untypedLabelWrapper {
+    display: flex;
+    gap: 8px;
+    margin-left: auto
+}
 .document-row {
     overflow: hidden;
     position: relative;
     user-select: none;
     cursor: default;
     display: grid;
-    grid-template-columns: minmax(215px, max-content) min-content;
+    //grid-template-columns: minmax(215px, max-content) 1fr min-content;
+    grid-template-columns: max-content 1fr min-content;
     justify-content: space-between;
     align-items: center;
     padding: 4px 10px 4px 12px;
@@ -482,6 +560,8 @@ export default class PageRow extends Vue {
         }
 
         .title {
+            font-size: 1rem;
+            font-weight: 500;
             @include ellipsis;
         }
 
@@ -510,7 +590,7 @@ export default class PageRow extends Vue {
 
     &__date-properties {
         display: grid;
-        grid-template-columns: repeat(3, min-content);
+        grid-template-columns: repeat(2, min-content);
         align-items: center;
         gap: 4px;
 
@@ -530,14 +610,16 @@ export default class PageRow extends Vue {
 }
 .view-page-labels {
     display: flex;
-    gap: 2px;
+    align-items: center;
+    gap: 10px;
     margin-right: 8px;
+    margin-left: 16px;
 
-    span {
+    .label {
         color: var(--accent-color);
-        padding: 2px 6px;
+        padding: 2px 0;
         border-radius: 4px;
-        font-size: 12px;
+        font-size: 13px;
         line-height: 16px;
         font-weight: 500;
     }
