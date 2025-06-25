@@ -9,6 +9,7 @@
         />
         <hr v-if="view?.type === ViewType.ALL_PAGES" />
         <div class="view-filter-controls__title">Filters</div>
+        <FilterOperation/>
         <template v-for="definition in availableControls">
             <PageDefinitionControl
                 :key="definition.name"
@@ -34,6 +35,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import isEmpty from 'lodash/isEmpty';
+import FilterOperation from '~/components/view/controls/filter/FilterOperation.vue';
 import PageFilterByLabel from '~/components/view/controls/filter/PageFilterByLabel.vue';
 import PageFilterByFolder from '~/components/view/controls/filter/PageFilterByFolder.vue';
 import PageListSourceControls from '~/components/view/controls/filter/PageListSourceControls.vue';
@@ -60,6 +62,7 @@ import {
         PageListSourceControls,
         PageFilterByFolder,
         PageFilterByLabel,
+        FilterOperation,
     },
 })
 export default class PageListControlsDropdown extends Vue {
@@ -75,6 +78,10 @@ export default class PageListControlsDropdown extends Vue {
     @Prop({ default: () => [] })
     definitions!: ViewPropertyDefinition[];
 
+    get currentOperation() {
+        return this.$utils.pageList.getFilterOperation();
+    }
+
     get sourceDef() {
         return this.definitions.find(
             definition => definition.property === 'dailyDoc',
@@ -89,7 +96,6 @@ export default class PageListControlsDropdown extends Vue {
 
     get availableControls() {
         const options = this.$entities.view.viewSelectOptions();
-        
         const availableControls: any = [];
 
         for (let key in options) {
@@ -101,7 +107,7 @@ export default class PageListControlsDropdown extends Vue {
                     name: 'Label',
                     placeholderSuffix: 'labels',
                     property: 'labels',
-                    operation: 'overlap',
+                    operation: this.currentOperation,
                 };
             } else if (key === 'projectId') {
                 controlDefinition = {
@@ -109,7 +115,7 @@ export default class PageListControlsDropdown extends Vue {
                     name: 'Folder',
                     placeholderSuffix: 'folders',
                     property: 'projectId',
-                    operation: 'overlap',
+                    operation: this.currentOperation,
                 };
             } else if (key === 'project') {
                 controlDefinition = {
@@ -117,7 +123,7 @@ export default class PageListControlsDropdown extends Vue {
                     name: 'Project',
                     placeholderSuffix: 'projects',
                     property: 'project',
-                    operation: 'overlap',
+                    operation: this.currentOperation,
                 };
             } else {
                 controlDefinition = {
@@ -125,7 +131,7 @@ export default class PageListControlsDropdown extends Vue {
                     name: key.replace(/_/g, ' ').replace(/^./, c => c.toUpperCase()),
                     placeholderSuffix: key.replace(/_/g, ' '),
                     property: 'labels',
-                    operation: 'overlap',
+                    operation: this.currentOperation,
                 };
             }
 
@@ -166,9 +172,13 @@ export default class PageListControlsDropdown extends Vue {
     }
 
     hasPagesWithFilterProperty(defId: string) {
-        if(defId === 'project' || defId === 'labels' || defId === 'projectId') {
+        if(defId === 'project') {
+            return false;
+        }
+        if(defId === 'labels' || defId === 'projectId') {
             return true;
-        } else if (this.pages.some((page: any) => page.labels.some((label: string) => label.includes(defId)))) {
+        }
+        if (this.pages.some((page: any) => page.labels.some((label: string) => label.includes(defId)))) {
             return true;
         }
         return false;

@@ -54,7 +54,8 @@ export type IntegrationViewFilter = {
         | 'isNotSet'
         | 'isSet'
         | 'overlap'
-        | 'notoverlap';
+        | 'notoverlap'
+        | 'containsAll';
     value: any;
 };
 

@@ -551,7 +551,7 @@ export class ViewController extends EntityController<IView> {
         definitions: any[],
         items: any[],
     ) {
-        const isMultiSelect = ['in', 'notin', 'overlap'].includes(
+        const isMultiSelect = ['in', 'notin', 'overlap', 'nooverlap', 'containsAll'].includes(
             controlDefinition.operation,
         );
         return {
@@ -738,7 +738,7 @@ export class ViewController extends EntityController<IView> {
                     name: 'Folder',
                     placeholderSuffix: 'folder',
                     property,
-                    allowedOperations: ['overlap', 'nooverlap'],
+                    allowedOperations: ['overlap', 'nooverlap', 'containsAll'],
                     defaultOperation: 'overlap',
                     items: this.context.$entities.folder
                         .getFolders()
@@ -754,7 +754,7 @@ export class ViewController extends EntityController<IView> {
                     name: 'Project',
                     placeholderSuffix: 'project',
                     property,
-                    allowedOperations: ['overlap', 'nooverlap'],
+                    allowedOperations: ['overlap', 'nooverlap', 'containsAll'],
                     defaultOperation: 'overlap',
                     items: this.context.$entities.project
                         .getProjects()
@@ -770,7 +770,7 @@ export class ViewController extends EntityController<IView> {
                     name: 'Labels',
                     placeholderSuffix: 'labels',
                     property,
-                    allowedOperations: ['overlap', 'nooverlap'],
+                    allowedOperations: ['overlap', 'nooverlap', 'containsAll'],
                     defaultOperation: 'overlap',
                     items: this.context.store.getters['label/list'].map(
                         (label: ILabel) => ({

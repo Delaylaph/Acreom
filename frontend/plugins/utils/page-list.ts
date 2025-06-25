@@ -94,6 +94,14 @@ export class PageListUtils {
         return this.context.store.getters['page-list/dragData'];
     }
 
+    getFilterOperation() {
+        return this.context.store.getters['page-list/filterOperation'];
+    }
+
+    setFilterOperation(filterOperation: string) {
+        this.context.store.commit('page-list/setFilterOperation', filterOperation);
+    }
+
     startDrag(entityId: string, data: any) {
         window.$nuxt.$emit('view:dragPosition', {
             left: data.pageX,

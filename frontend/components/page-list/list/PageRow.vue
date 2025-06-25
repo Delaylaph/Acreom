@@ -312,6 +312,10 @@ export default class PageRow extends Vue {
         );
     }
 
+    get currentOperation() {
+        return this.$utils.pageList.getFilterOperation();
+    }
+
     get source() {
         return this.$tracking.resolveSourceFromTab(this.tabId);
     }
@@ -419,10 +423,10 @@ export default class PageRow extends Vue {
 
     async handleLabelClick(label: string) {
         const filterDefinition = {
-            id: 'label',
+            id: 'labels',
             name: 'Label',
             property: 'labels',
-            operation: 'overlap',
+            operation: this.currentOperation,
             value: [label],
         };
 
@@ -472,7 +476,7 @@ export default class PageRow extends Vue {
 .typedLabelWrapper {
     display: flex;
     align-items: center;
-    background: var(--document-card-bg-color_hover);
+    background: var(--navigation-bg-color);
     padding: 2px 6px;
     border-radius: 6px;
     line-height: 16px;

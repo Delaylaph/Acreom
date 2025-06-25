@@ -92,6 +92,10 @@ export default class XRayLocation extends Vue {
     @Prop({ default: false })
     isMobile!: boolean;
 
+    get currentOperation() {
+        return this.$utils.pageList.getFilterOperation();
+    }
+    
     get project() {
         if (!this.page) return null;
         if (!this.page.projectId) return null;
@@ -171,7 +175,7 @@ export default class XRayLocation extends Vue {
                 filterDefinition: [
                     {
                         property: 'labels',
-                        operation: 'overlap',
+                        operation: this.currentOperation,
                         value: [_tag],
                     },
                 ],

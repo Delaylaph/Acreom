@@ -24,7 +24,8 @@ export type ViewPropertyDefinition = {
         | 'isNotSet'
         | 'isSet'
         | 'overlap'
-        | 'notoverlap';
+        | 'notoverlap'
+        | 'containsAll';
     value: any;
 };
 

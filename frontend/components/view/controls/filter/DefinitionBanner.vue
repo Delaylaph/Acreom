@@ -68,7 +68,7 @@ export default class DefinitionBanner extends Vue {
     }
 
     get isMultiselect() {
-        return ['in', 'overlap'].includes(this.definition.operation);
+        return ['in', 'overlap', 'nooverlap', 'containsAll'].includes(this.definition.operation);
     }
 
     get items() {

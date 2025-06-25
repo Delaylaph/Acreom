@@ -483,6 +483,19 @@ export class PageUtils {
                     const prop = entity[property];
                     return prop === undefined || prop === null;
                 };
+            case 'containsAll':
+                return (entity: any) => {
+                    return (
+                        definition.value.filter((val: any) => {
+                            if (!(property in entity)) return false;
+                            let prop = entity[property];
+                            if (!Array.isArray(prop)) {
+                                prop = [prop];
+                            }
+                            return prop.includes(val);
+                        }).length == definition.value.length
+                    );
+                };
             case 'overlap':
                 return (entity: any) => {
                     return (

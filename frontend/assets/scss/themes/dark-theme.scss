@@ -88,7 +88,7 @@
     --scrollbar-bg-color__hover: #{$blueGrey700};
 
     /* EDITOR */
-    --editor-text-color: #{#ebeef2};
+    --editor-text-color: #{#c2c7d1};
     --editor-mark-bg-color: #{rgba(var(--accent-color-triplet), 0.4)};
     --editor-code-bg-color: #{$blueGrey900};
     --editor-code-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06), 0 12px 50px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(241, 241, 241, 0.03);
@@ -813,7 +813,7 @@
 
     --issue-status-bg-color__hover: #{$blueGrey100-20};
 
-    --jira-issue-text-color: #{#ebeef2};
+    --jira-issue-text-color: #{#dde1e7};
     --jira-issue-key-color: #{$blueGrey400};
     --jira-issue-bg-color__hover: #{$blueGrey100-10};
 
@@ -908,9 +908,9 @@
 
     --c-button-box-shadow: #{rgba(0, 0, 0, 0.05)};
 
-    --c-button-primary-text-color: #{$blueGrey800};
-    --c-button-primary-bg-color: #{$white};
-    --c-button-primary-bg-color__hover: #{darken($white, 10%)};
+    --c-button-primary-text-color: #{$blueGrey300};
+    --c-button-primary-bg-color: #{$blueGrey500-16};
+    --c-button-primary-bg-color__hover: #{$blueGrey500-32};
 
     --c-button-secondary-text-color: #{$white};
     --c-button-secondary-bg-color: #{$blueGrey700};
