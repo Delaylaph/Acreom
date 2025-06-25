@@ -42,6 +42,9 @@ export default class PageListControlsWrapper extends Vue {
 
     @Prop()
     definition!: any;
+    
+    @Prop()
+    pages!: [];
 
     @Prop({ default: true })
     showFilterOptions!: boolean;
@@ -85,6 +88,7 @@ export default class PageListControlsWrapper extends Vue {
                 showGroupOptions: this.showGroupOptions,
                 definitions: this.definition,
                 pageListType: this.pageListType,
+                pages: this.pages,
             },
             on: {
                 'update-filters': (data: any) => {

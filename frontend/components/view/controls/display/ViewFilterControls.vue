@@ -9,19 +9,20 @@
         />
         <hr v-if="view?.type === ViewType.ALL_PAGES" />
         <div class="view-filter-controls__title">Filters</div>
-        <PageDefinitionControl
-            v-for="definition in availableControls"
-            :key="definition.name"
-            class="view-filter-controls__item"
-            :name="definition.name"
-            :items="definition.items"
-            :selected-items="definition.selectedItems"
-            :multiselect="definition.multiselect"
-            :search-placeholder="definition.searchPlaceholder"
-            :placeholder="definition.placeholder"
-            @update="definition.update"
-            @close="definition.close"
-        />
+        <template v-for="definition in availableControls">
+            <PageDefinitionControl
+                :key="definition.name"
+                class="view-filter-controls__item"
+                :name="definition.name"
+                :items="definition.items"
+                :selected-items="definition.selectedItems"
+                :multiselect="definition.multiselect"
+                :search-placeholder="definition.searchPlaceholder"
+                :placeholder="definition.placeholder"
+                @update="definition.update"
+                @close="definition.close"
+            />
+        </template>
         <PageListTasksControls
             class="view-filter-controls__item"
             :tab-id="tabId"
@@ -65,6 +66,9 @@ export default class PageListControlsDropdown extends Vue {
     @Prop({})
     tabId!: string;
 
+    @Prop()
+    pages!: [];
+
     @Prop({})
     entityId!: string;
 
@@ -93,7 +97,7 @@ export default class PageListControlsDropdown extends Vue {
 
             if (key === 'labels') {
                 controlDefinition = {
-                    id: 'label',
+                    id: 'labels',
                     name: 'Label',
                     placeholderSuffix: 'labels',
                     property: 'labels',
@@ -101,7 +105,7 @@ export default class PageListControlsDropdown extends Vue {
                 };
             } else if (key === 'projectId') {
                 controlDefinition = {
-                    id: 'folder',
+                    id: 'projectId',
                     name: 'Folder',
                     placeholderSuffix: 'folders',
                     property: 'projectId',
@@ -124,37 +128,50 @@ export default class PageListControlsDropdown extends Vue {
                     operation: 'overlap',
                 };
             }
-            availableControls.push({
-                ...this.$entities.view.createDefinitionControl(
-                    controlDefinition,
-                    this.definitions,
-                    options[key],
-                ),
-                update: (value: any) => {
-                    const fn = this.$entities.view.createUpdateWrapper(
+
+            if(this.hasPagesWithFilterProperty(controlDefinition.id)) {
+                availableControls.push({
+                    ...this.$entities.view.createDefinitionControl(
                         controlDefinition,
                         this.definitions,
-                    );
-                    const res = fn(value);
-                    this.$emit('update', res);
-                },
-                close: (value: any) => {
-                    if (!value || isEmpty(value)) {
-                        const definition = this.definitions.filter(
-                            definition =>
-                                definition.id !==
-                                controlDefinition.id,
+                        options[key],
+                    ),
+                    update: (value: any) => {
+                        const fn = this.$entities.view.createUpdateWrapper(
+                            controlDefinition,
+                            this.definitions,
                         );
-                        this.$emit('update', definition);
-                    }
-                },
-            });
+                        const res = fn(value);
+                        this.$emit('update', res);
+                    },
+                    close: (value: any) => {
+                        if (!value || isEmpty(value)) {
+                            const definition = this.definitions.filter(
+                                definition =>
+                                    definition.id !==
+                                    controlDefinition.id,
+                            );
+                            this.$emit('update', definition);
+                        }
+                    },
+                });
+            }
+            
         };
         return availableControls;
     }
 
     get view() {
         return this.$entities.view.getViewById(this.entityId);
+    }
+
+    hasPagesWithFilterProperty(defId: string) {
+        if(defId === 'project' || defId === 'labels' || defId === 'projectId') {
+            return true;
+        } else if (this.pages.some((page: any) => page.labels.some((label: string) => label.includes(defId)))) {
+            return true;
+        }
+        return false;
     }
 
     handleSourceChange(sourceDef: ViewPropertyDefinition) {

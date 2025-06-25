@@ -617,63 +617,63 @@ export class Tracker {
     }
 
     activityPing(_payload: any) {
-        const diff = Date.now() - this.lastPingTimestamp;
+        // const diff = Date.now() - this.lastPingTimestamp;
 
-        if (!this.sessionStart) {
-            // first ever session;
-            this.trackSessionStart();
-        }
+        // if (!this.sessionStart) {
+        //     // first ever session;
+        //     this.trackSessionStart();
+        // }
 
-        if (diff > SESSION_TIMEOUT) {
-            this.trackSessionEnd();
-            this.trackSessionStart();
-        }
+        // if (diff > SESSION_TIMEOUT) {
+        //     this.trackSessionEnd();
+        //     this.trackSessionStart();
+        // }
 
-        this.lastPingTimestamp = Date.now();
-        this.storage.set('last_ping_timestamp', this.lastPingTimestamp);
+        // this.lastPingTimestamp = Date.now();
+        // this.storage.set('last_ping_timestamp', this.lastPingTimestamp);
     }
 
     trackEventV2(eventType: TrackingType, properties: TrackingProperties) {
-        const event = {
-            event_type: eventType,
-            user_id: this.defaultProperties.user_id || null,
-            cookie: this.defaultProperties.app_id,
-            properties,
-            meta: {
-                ...this.getExtraProperties(),
-                os: this.defaultProperties.os,
-                platform: this.defaultProperties.platform,
-                version: this.defaultProperties.version,
-                timezone: this.defaultProperties.timezone,
-            },
-        };
+        // const event = {
+        //     event_type: eventType,
+        //     user_id: this.defaultProperties.user_id || null,
+        //     cookie: this.defaultProperties.app_id,
+        //     properties,
+        //     meta: {
+        //         ...this.getExtraProperties(),
+        //         os: this.defaultProperties.os,
+        //         platform: this.defaultProperties.platform,
+        //         version: this.defaultProperties.version,
+        //         timezone: this.defaultProperties.timezone,
+        //     },
+        // };
 
-        this.sendEventV2(event);
-        if (eventType !== TrackingType.SESSION) {
-            this.activityPing(eventType);
-        }
+        // this.sendEventV2(event);
+        // if (eventType !== TrackingType.SESSION) {
+        //     this.activityPing(eventType);
+        // }
     }
 
     trackEvent(
         eventType: string | TrackingType,
         properties: Record<string, any> = {},
     ) {
-        const event = {
-            type: 'event',
-            event_type: eventType,
-            user_id: this.defaultProperties.user_id || null,
-            app_id: this.defaultProperties.app_id,
-            os: this.defaultProperties.os,
-            platform: this.defaultProperties.platform,
-            version: this.defaultProperties.version,
-            timezone: this.defaultProperties.timezone,
-            properties: {
-                ...this.getExtraProperties(),
-                ...properties,
-            },
-        };
+        // const event = {
+        //     type: 'event',
+        //     event_type: eventType,
+        //     user_id: this.defaultProperties.user_id || null,
+        //     app_id: this.defaultProperties.app_id,
+        //     os: this.defaultProperties.os,
+        //     platform: this.defaultProperties.platform,
+        //     version: this.defaultProperties.version,
+        //     timezone: this.defaultProperties.timezone,
+        //     properties: {
+        //         ...this.getExtraProperties(),
+        //         ...properties,
+        //     },
+        // };
 
-        this.sendEvent(event);
+        // this.sendEvent(event);
     }
 
     sendEvent(event: any) {

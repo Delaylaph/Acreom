@@ -47,6 +47,7 @@
                     >
                         <div class="page-list__header-controls">
                             <PageListControlsWrapper
+                                :pages="pages"
                                 :definition="activeFilters"
                                 :show-filter-options="!$entities.project.isProject(entityId)"
                                 :show-group-options="

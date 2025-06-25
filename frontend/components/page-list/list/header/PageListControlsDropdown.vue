@@ -2,6 +2,7 @@
     <div class="page-list-controls-dropdown">
         <ViewFilterControls
             v-if="showFilterOptions"
+            :pages="pages"
             :tab-id="tabId"
             :entity-id="entityId"
             :definitions="temporaryDefinitions"
@@ -35,6 +36,9 @@ import { PageListSymbols } from '~/constants/symbols';
 export default class PageListControlsDropdown extends Vue {
     @Prop({})
     tabId!: string;
+
+    @Prop()
+    pages!: [];
 
     @Prop({})
     entityId!: string;
