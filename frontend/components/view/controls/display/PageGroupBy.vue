@@ -42,6 +42,10 @@ export default class PageGroupBy extends Vue {
         return PageListType.VIEW;
     }
 
+    get customLabelTypes() {
+        return this.$utils.pageList.getCustomLabelTypes();
+    }
+
     get groupingOptions() {
         const options = [
             {
@@ -53,10 +57,18 @@ export default class PageGroupBy extends Vue {
                 label: 'Status',
             },
         ];
-        if (this.viewType !== PageListType.PROJECT) {
+        if(this.viewType !== PageListType.PROJECT) {
             options.push({
                 id: GroupingOptions.FOLDER,
                 label: 'Folder',
+            });
+        }
+        if(this.customLabelTypes.length !== 0) {
+            this.customLabelTypes.forEach((type: any) => {
+                options.push({
+                    id: type,
+                    label: type.charAt(0).toUpperCase() + type.replace('_', ' ').slice(1),
+                })
             });
         }
         return options;

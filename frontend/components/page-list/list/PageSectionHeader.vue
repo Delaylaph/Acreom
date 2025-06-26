@@ -30,13 +30,13 @@
         <div v-else class="page-section-header__icon">
             <InterfaceFolder class="icon" size="14" />
         </div>
-        {{ sectionName }}
+        {{ prettyNameInternal }}
         <span class="page-section-header__counter">{{ count }}</span>
     </button>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import InterfaceGeometricTriangle from '~/components/streamline/InterfaceGeometricTriangle.vue';
 import { GroupingOptions } from '~/constants';
 import InterfaceFolder from '~/components/streamline/InterfaceFolder.vue';
@@ -87,6 +87,19 @@ export default class PageStatusHeader extends Vue {
         }
         return null;
     }
+
+    prettyNameInternal: string = '';
+
+    @Watch('sectionName', { immediate: true })
+    onSectionNameChanged(newVal: string) {
+    if (this.groupBy !== GroupingOptions.PAGE_STATUS && this.groupBy !== GroupingOptions.FOLDER) {
+        const parts = newVal.split(':');
+        const prettyName = parts[1] ?? newVal;
+        this.prettyNameInternal = prettyName.charAt(0).toUpperCase() + prettyName.slice(1);
+    } else {
+        this.prettyNameInternal = newVal;
+    }
+  }
 }
 </script>
 

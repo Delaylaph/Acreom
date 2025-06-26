@@ -378,6 +378,10 @@ export default class PageList extends Vue {
         return this.pageListViewOptions.groupBy ?? GroupingOptions.NONE;
     }
 
+    get labels() {
+        return this.$store.getters['label/list'];
+    }
+
     get sections() {
         if (this.groupBy === GroupingOptions.PAGE_STATUS) {
             if (this.pageListType === PageListType.VIEW) {
@@ -398,6 +402,11 @@ export default class PageList extends Vue {
                 .filter((node: any) => !!node.children)
                 .map(({ data }: { data: any }) => data.id);
             return [...folders, null];
+        }
+        if(this.groupBy !== GroupingOptions.NONE) {
+            const type = '#' + this.groupBy;
+            const labels = this.labels.filter((label: string) => label.includes(type));
+            return labels;
         }
         return [];
     }
@@ -647,7 +656,7 @@ export default class PageList extends Vue {
                        : this.activeFilters.map((def: any) => {
                             if (def.id && def.id === definition.id) {
                                 if(def.value.includes(definition.value[0])) {
-                                    if (definition.value.length === 1) {
+                                    if (def.value.length === 1) {
                                         return null;
                                     }
                                     definition.value = def.value.filter(
@@ -775,6 +784,11 @@ export default class PageList extends Vue {
             }
             return this.filteredPages.filter(
                 (page: any) => page.projectId === id,
+            );
+        }
+        if(this.groupBy !== GroupingOptions.NONE) {
+            return this.filteredPages.filter(
+                (page: any) => page.labels.some((label: string) => label === id),
             );
         }
         return this.filteredPages;

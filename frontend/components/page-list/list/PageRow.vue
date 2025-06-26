@@ -487,7 +487,7 @@ export default class PageRow extends Vue {
 }
 .untypedLabelWrapper {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     margin-left: auto;
     width: max-content;
 }
