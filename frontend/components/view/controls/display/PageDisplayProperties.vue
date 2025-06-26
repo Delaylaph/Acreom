@@ -30,14 +30,22 @@ export default class PageDisplayProperties extends Vue {
     viewOptions!: any;
 
     get properties() {
-        return this.$utils.pageList.getAllowedDisplayProperties(
+        const props = this.$utils.pageList.getAllowedDisplayProperties(
             this.pageListType,
             this.entityId,
         );
+        return [
+            ...props,
+            ...this.customLabelTypes
+        ]
     }
 
     get selected() {
         return this.viewOptions.selectedDisplayProperties ?? [];
+    }
+
+    get customLabelTypes() {
+        return this.$utils.pageList.getCustomLabelTypes();
     }
 
     updateDisplayProperties(property: string) {

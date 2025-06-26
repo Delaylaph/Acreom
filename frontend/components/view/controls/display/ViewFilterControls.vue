@@ -97,6 +97,7 @@ export default class PageListControlsDropdown extends Vue {
     get availableControls() {
         const options = this.$entities.view.viewSelectOptions();
         const availableControls: any = [];
+        const customLabelTypes: string[] = []
 
         for (let key in options) {
             let controlDefinition: any = null;
@@ -133,6 +134,7 @@ export default class PageListControlsDropdown extends Vue {
                     property: 'labels',
                     operation: this.currentOperation,
                 };
+                customLabelTypes.push(key);
             }
 
             if(this.hasPagesWithFilterProperty(controlDefinition.id)) {
@@ -164,6 +166,8 @@ export default class PageListControlsDropdown extends Vue {
             }
             
         };
+
+        this.$utils.pageList.setCustomLabelTypes(customLabelTypes);
         return availableControls;
     }
 

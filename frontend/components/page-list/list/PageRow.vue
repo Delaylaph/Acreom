@@ -88,13 +88,15 @@
                 <template v-if="pageLabels.length > 0">
                     <template v-for="(labels, type) in pageLabelsByType">
                         <template v-if="type !== 'untyped'">
-                            <div class="typedLabelWrapper">{{ type.replace(/_/g, ' ') }}:
-                                <template v-for="labelWrapper in labels">
-                                    <span @click.stop="handleLabelClick(labelWrapper.id)">{{ labelWrapper.name }}</span>
-                                </template>
-                            </div>
+                            <template v-if="shouldShowProperty(type)">
+                                <div class="typedLabelWrapper">{{ type.replace(/_/g, ' ') }}:
+                                    <template v-for="labelWrapper in labels">
+                                        <span @click.stop="handleLabelClick(labelWrapper.id)">{{ labelWrapper.name }}</span>
+                                    </template>
+                                </div>
+                            </template>
                         </template>
-                        <div v-else class="untypedLabelWrapper">
+                        <div v-else-if="shouldShowProperty('labels')" class="untypedLabelWrapper">
                             <template v-for="label in labels">
                                 <span class="label" @click.stop="handleLabelClick(label)">{{ label }}</span>
                             </template>
@@ -391,16 +393,8 @@ export default class PageRow extends Vue {
     }
 
     shouldShowProperty(propertyName: string) {
-        const allowedProperties =
-            this.$utils.pageList.getAllowedDisplayProperties(
-                this.pageListType,
-                this.entityId,
-            );
         const selectedProperties = this.selectedDisplayProperties ?? [];
-        return (
-            allowedProperties.includes(propertyName) &&
-            selectedProperties.includes(propertyName)
-        );
+        return selectedProperties.includes(propertyName);
     }
 
     async handleContextMenu(e: MouseEvent) {
@@ -494,7 +488,8 @@ export default class PageRow extends Vue {
 .untypedLabelWrapper {
     display: flex;
     gap: 8px;
-    margin-left: auto
+    margin-left: auto;
+    width: max-content;
 }
 .document-row {
     overflow: hidden;
@@ -614,6 +609,7 @@ export default class PageRow extends Vue {
 }
 .view-page-labels {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     gap: 10px;
     margin-right: 8px;

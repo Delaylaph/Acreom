@@ -386,7 +386,13 @@ export class ViewController extends EntityController<IView> {
 
     getDisplayPropertiesForViewType(type: ViewType) {
         if (type === ViewType.TEMPLATES) {
-            return ['icon', 'created'];
+            return [
+                'icon', 
+                'created',
+                'labels',
+                'updated',
+                'created',
+            ];
         }
         if (type === ViewType.ARCHIVE) {
             return [
@@ -395,6 +401,7 @@ export class ViewController extends EntityController<IView> {
                 'clip',
                 'links',
                 'date',
+                'labels',
                 'updated',
                 'created',
             ];
@@ -409,6 +416,7 @@ export class ViewController extends EntityController<IView> {
             'clip',
             'links',
             'date',
+            'labels',
             'updated',
             'created',
         ];

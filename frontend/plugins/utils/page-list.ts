@@ -90,8 +90,12 @@ export class PageListUtils {
         }
     }
 
-    getDragData() {
-        return this.context.store.getters['page-list/dragData'];
+    getCustomLabelTypes() {
+        return this.context.store.getters['page-list/customLabelTypes'];
+    }
+
+    setCustomLabelTypes(customLabelTypes: string[]) {
+        this.context.store.commit('page-list/setCustomLabelTypes', customLabelTypes);
     }
 
     getFilterOperation() {
@@ -100,6 +104,10 @@ export class PageListUtils {
 
     setFilterOperation(filterOperation: string) {
         this.context.store.commit('page-list/setFilterOperation', filterOperation);
+    }
+
+    getDragData() {
+        return this.context.store.getters['page-list/dragData'];
     }
 
     startDrag(entityId: string, data: any) {

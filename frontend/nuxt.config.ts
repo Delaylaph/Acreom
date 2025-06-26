@@ -24,7 +24,7 @@ const DESCRIPTION =
 const URL =
     (process.env.FE_BASE_URL as string) ||
     (process.env.DEPLOY_PRIME_URL as string) ||
-    'https://app.acreom.com';
+    'http://localhost:3000';
 const IMAGE_TWITTER = `${URL}/social/twitter.png`;
 const IMAGE_FB = `${URL}/social/fb.png`;
 const ENV = process.env.NODE_ENV as string;
@@ -32,7 +32,7 @@ const VERSION = pkg.version;
 const ACR_PLATFORM =
     (process.env.ACR_PLATFORM as string) || 'desktop';
 const ACR_OS = (process.env.ACR_OS as string) || getOperatingSystem();
-const BASE_URL = (process.env.BASE_URL as string) || 'https://api-1.acreom.com';
+const BASE_URL = (process.env.BASE_URL as string) || 'http://localhost:3000';
 const TRACKING_URL = (process.env.TRACKING_URL as string) || '';
 const TRACKING_URL_V2 = (process.env.TRACKING_URL_V2 as string) || '';
 const MONTHLY_BILLING_URL = (process.env.MONTHLY_BILLING_URL as string) || '';

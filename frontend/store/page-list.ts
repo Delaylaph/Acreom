@@ -1,11 +1,13 @@
 interface AppState {
     drag: { entityId: string; data: any } | null;
     filterOperation: string;
+    customLabelTypes: string[];
 }
 
 export const state = (): AppState => ({
     drag: null,
     filterOperation: 'overlap',
+    customLabelTypes: [],
 });
 
 export const getters = {
@@ -14,6 +16,9 @@ export const getters = {
     },
     filterOperation: (state: AppState) => {
         return state.filterOperation;
+    },
+    customLabelTypes: (state: AppState) => {
+        return state.customLabelTypes;
     },
 };
 
@@ -29,5 +34,8 @@ export const mutations = {
     },
     setFilterOperation: (state: AppState, filterOperation: string) => {
         state.filterOperation = filterOperation;
+    },
+    setCustomLabelTypes: (state: AppState, labelTypes: string[]) => {
+        state.customLabelTypes = labelTypes;
     },
 };
