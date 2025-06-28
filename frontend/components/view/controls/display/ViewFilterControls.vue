@@ -182,7 +182,10 @@ export default class PageListControlsDropdown extends Vue {
         if(defId === 'labels' || defId === 'projectId') {
             return true;
         }
-        if (this.pages.some((page: any) => page.labels.some((label: string) => label.includes(defId)))) {
+        if(defId !== null && !this.pages) {
+            return true;
+        }
+        if (this.pages && this.pages.some((page: any) => page.labels.some((label: string) => label.includes(defId)))) {
             return true;
         }
         return false;
