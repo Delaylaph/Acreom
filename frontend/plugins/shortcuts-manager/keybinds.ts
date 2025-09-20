@@ -159,7 +159,7 @@ export const KEYBINDS = {
         configurable: true,
     },
     [SHORTCUTS_ALIASES.PANEL_TIMELINE]: {
-        keybind: 'meta+shift+i',
+        keybind: 'meta+shift+y',
         namespace: 'overview & editor-inactive',
         category: 'navigation-my-day',
         configurable: true,

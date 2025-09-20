@@ -217,7 +217,7 @@ export const createMainWindow = async (
         autoHideMenuBar: true,
         frame: false,
         webPreferences: {
-            // devTools: !app.isPackaged,
+            devTools: true,
             nodeIntegration: true,
             nodeIntegrationInWorker: true,
             preload: path.join(__dirname, '..', '/preload/preload.js'),
@@ -266,6 +266,12 @@ export const createMainWindow = async (
     appWindows.main.on('closed', () => {
         appWindows.quickNote.destroy();
         appWindows.main = null;
+    });
+
+    appWindows.main.webContents.on('before-input-event', (event, input) => {
+        if (input.control && input.shift && input.key.toLowerCase() === 'i') {
+          appWindows.main.webContents.openDevTools();
+        }
     });
 
     appWindows.main.on('show', () => {

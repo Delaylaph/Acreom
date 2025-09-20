@@ -589,7 +589,7 @@ export class ViewController extends EntityController<IView> {
             .map((label: ILabel) => {
                 if (typeof label === 'string' && label.includes(':')) {
                     const parts = label.split(':');
-                    if(parts[0].length > 1 && parts[1].length > 1) {
+                    if(parts[0].length >= 1 && parts[1].length >= 1) {
                         const type = parts[0].slice(1);
                         const labelText = parts[1];
 
